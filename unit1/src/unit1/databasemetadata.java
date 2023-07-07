@@ -1,22 +1,39 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package unit1;
 import java.sql.*;
 
-/**
- *
- * @author Lenovo
- */
 public class databasemetadata {
-    public static void main(String[] args) 
-    { 
-        Class.forName("com.mysql.jdbc.Driver"); 
-        String url = "jdbc:mysql://localhost/stud"; 
-        Connection con =DriverManager.getConnection(url,"root",""); 
-        
-        
+     public static void main(String[] args) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql:///bca", "root", "");
+            Statement st = con.createStatement();
+            DatabaseMetaData dmd = con.getMetaData();
+            ResultSet tablesResultSet = dmd.getTables(null, null, null, null);
+            
+            while (tablesResultSet.next()) {
+                System.out.println(tablesResultSet.getString("TABLE_NAME"));
+                
+                String tableName = tablesResultSet.getString("TABLE_NAME");
+                ResultSet rs = st.executeQuery("SELECT * FROM " + tableName);
+                ResultSetMetaData rsmd = rs.getMetaData();
+                
+                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                    System.out.print(rsmd.getColumnName(i) + " ");
+                }
+                System.out.println("");
+                
+                while (rs.next()) {
+                    for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                        System.out.print(rs.getString(i) + " ");
+                    }
+                    System.out.println("");
+                }
+            }
+            
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }
