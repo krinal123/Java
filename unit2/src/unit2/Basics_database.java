@@ -304,7 +304,6 @@ public class Basics_database extends javax.swing.JFrame {
             football.setSelected(false); 
             volyball.setSelected(false); 
             basketball.setSelected(false); 
-            
     }//GEN-LAST:event_resetActionPerformed
 
     /**
