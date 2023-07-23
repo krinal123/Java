@@ -52,7 +52,6 @@ public class IF extends javax.swing.JFrame {
         lblid3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblid3.setText("City :");
 
-        txtid.setEditable(false);
         txtid.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         txtid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -180,63 +179,82 @@ public class IF extends javax.swing.JFrame {
     }//GEN-LAST:event_txtidActionPerformed
 
     private void btnsubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsubmitActionPerformed
-       try {  
-           if(!rs.next()) 
-           rs.first();
-           msg.setText("Record Fetch Sucessfully");
-           txtid.setText(rs.getString(1)); 
-           txtnm.setText(rs.getString(2)); 
-           txtnm.setText(rs.getString(3));
-       }catch(Exception e) 
-       { 
-           System.out.println(e);
-       }
+       try {
+            if (rs.next()) {
+                msg.setText("Record Fetch Successfully");
+                txtid.setText(rs.getString(1));
+                txtnm.setText(rs.getString(2));
+                txtct.setText(rs.getString(3));
+            } else {
+                msg.setText("No more records");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }//GEN-LAST:event_btnsubmitActionPerformed
 
     private void btneditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditActionPerformed
-      try {   
-           PreparedStatement ps = con.prepareStatement("update info set name=?,city=? where id=?"); 
-           ps.setInt(1,Integer.parseInt(txtid.getText()));
-           ps.setString(2,txtnm.getText());
-           ps.setString(3,txtct.getText());
-           ps.executeUpdate();
-           msg.setText("Record Update Sucessfully");
-       }catch(Exception e) 
-       { 
-           System.out.println(e);
-       }  
+       try {
+            PreparedStatement ps = con.prepareStatement("update info set name=?, city=? where id=?");
+            ps.setString(1, txtnm.getText());
+            ps.setString(2, txtct.getText());
+            ps.setInt(3, Integer.parseInt(txtid.getText()));
+            int rowsUpdated = ps.executeUpdate();
+            if (rowsUpdated > 0) {
+                msg.setText("Record Update Successfully");
+            } else {
+                msg.setText("No record with the specified ID found");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }//GEN-LAST:event_btneditActionPerformed
 
     private void btnprevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnprevActionPerformed
-       try {  
-           if(!rs.previous()) 
-           rs.first();
-           msg.setText("Record Fetch Sucessfully");
-           txtid.setText(rs.getString(1)); 
-           txtnm.setText(rs.getString(2)); 
-           txtnm.setText(rs.getString(3));
-       }catch(Exception e) 
-       { 
-           System.out.println(e);
-       } 
+      try {
+            if (rs.previous()) {
+                msg.setText("Record Fetch Successfully");
+                txtid.setText(rs.getString(1));
+                txtnm.setText(rs.getString(2));
+                txtct.setText(rs.getString(3));
+            } else {
+                msg.setText("No previous records");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }//GEN-LAST:event_btnprevActionPerformed
 
     private void btndelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndelActionPerformed
-        // TODO add your handling code here:
+    try {
+            PreparedStatement ps = con.prepareStatement("DELETE FROM info WHERE id=?");
+            ps.setInt(1, Integer.parseInt(txtid.getText()));
+            int rowsDeleted = ps.executeUpdate();
+            if (rowsDeleted > 0) {
+                msg.setText("Record Delete Successfully");
+            } else {
+                msg.setText("No record with the specified ID found");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }//GEN-LAST:event_btndelActionPerformed
 
     private void btninsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btninsertActionPerformed
-      try {   
-           PreparedStatement ps = con.prepareStatement("insert into info (id,name,city) values (?,?,?)"); 
-           ps.setInt(1,Integer.parseInt(txtid.getText()));
-           ps.setString(2,txtnm.getText());
-           ps.setString(3,txtct.getText());
-           ps.executeUpdate();
-           msg.setText("Record Insert Sucessfully");
-       }catch(Exception e) 
-       { 
-           System.out.println(e);
-       }  
+      try {
+            PreparedStatement ps = con.prepareStatement("insert into info (id, name, city) values (?, ?, ?)");
+            ps.setInt(1, Integer.parseInt(txtid.getText()));
+            ps.setString(2, txtnm.getText());
+            ps.setString(3, txtct.getText());
+            int rowsInserted = ps.executeUpdate();
+            if (rowsInserted > 0) {
+                msg.setText("Record Insert Successfully");
+            } else {
+                msg.setText("Failed to insert the record");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }//GEN-LAST:event_btninsertActionPerformed
 
     /**
@@ -274,16 +292,15 @@ public class IF extends javax.swing.JFrame {
                 new IF().setVisible(true);
             }
         }); 
-        try {  
-           Class.forName("com.mysql.jdbc.Driver"); 
-           String url = "jdbc:mysql://localhost:3306/stud"; 
-            con = DriverManager.getConnection(url,"root",""); 
-           Statement st = con.createStatement(); 
-           rs = st.executeQuery("select * from info"); 
-       }catch(Exception e) 
-       { 
-           System.out.println(e);
-       }  
+       try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String url = "jdbc:mysql://localhost:3306/stud";
+            con = DriverManager.getConnection(url, "root", "");
+            Statement st = con.createStatement();
+            rs = st.executeQuery("select * from info");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
