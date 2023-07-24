@@ -1,6 +1,6 @@
 # Repository Description
 
-This repository contains all my Java programs for students at Atmiya University. You can copy and paste the code. These programs are created by Miraj Sankdecha, and this repository provides up-to-date Java programs.
+This repository contains all my Java programs for students at Atmiya University. You can copy and paste the code. These programs are created by **Miraj Sankdecha**, and this repository provides up-to-date Java programs.
 
 ## Usage
 
@@ -8,7 +8,7 @@ Feel free to explore the programs and use them for your studies or projects. If 
 
 ## Author
 
-Miraj Sankdecha
+**Miraj Sankdecha**
 
 ## Note
 
